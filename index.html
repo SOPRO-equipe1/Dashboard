@@ -1,236 +1,731 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SOPRO — Slides</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
-<link rel="stylesheet" href="style.css">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOPRO — Slides</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --sky: #4DC3EF;
+      --mint: #2DD9A4;
+      --amber: #F5A623;
+      --slate: #2E3D49;
+      --light: #F5F5F5;
+      --white: #FFFFFF;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #E8E8E8;
+      padding: 40px 20px 80px;
+      color: var(--slate);
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #999;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+
+    .slide {
+      width: 100%;
+      max-width: 960px;
+      margin: 0 auto 60px;
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(46, 61, 73, 0.12);
+    }
+
+
+    .slide-bar {
+      height: 6px;
+      background: var(--bar-color, var(--sky));
+    }
+
+    .slide-body {
+      padding: 44px 48px 48px;
+    }
+
+
+    .slide-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 36px;
+      gap: 20px;
+    }
+
+    .slide-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bar-color, var(--sky));
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: var(--slate);
+      line-height: 1.1;
+    }
+
+    .slide-n {
+      flex-shrink: 0;
+      background: var(--light);
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-align: center;
+    }
+
+    .slide-n-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--slate);
+      line-height: 1;
+    }
+
+    .slide-n-lbl {
+      font-size: 10px;
+      color: #888;
+      margin-top: 3px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    @media(max-width:640px) {
+      .stats-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .stat {
+      border-radius: 14px;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      font-weight: 500;
+      line-height: 1.45;
+      opacity: 0.75;
+    }
+
+
+    .chart-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    @media(max-width:580px) {
+      .chart-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-box {
+      background: var(--light);
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    .cbox-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 14px;
+    }
+
+    .canvas-wrap {
+      position: relative;
+    }
+
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 16px;
+      margin-top: 12px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #555;
+    }
+
+    .ldot {
+      width: 9px;
+      height: 9px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /*(slide 2) ── */
+    .age-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .age-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .age-lbl {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--slate);
+      width: 96px;
+      flex-shrink: 0;
+    }
+
+    .bar-bg {
+      flex: 1;
+      height: 38px;
+      background: #EDEDED;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding-left: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+    }
+
+    .age-val {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #BDBDBD;
+      width: 32px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+
+    .perc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media(max-width:580px) {
+      .perc-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .perc-card {
+      background: var(--light);
+      border-radius: 14px;
+      padding: 22px;
+    }
+
+    .perc-q {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .big-pct {
+      font-family: 'Syne', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+
+    .big-sub {
+      font-size: 12px;
+      color: #888;
+    }
+
+    .mini-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .mb-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mb-lbl {
+      font-size: 11px;
+      color: #888;
+      width: 90px;
+      flex-shrink: 0;
+    }
+
+    .mb-bg {
+      flex: 1;
+      height: 8px;
+      background: #DEDEDE;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .mb-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .mb-val {
+      font-size: 11px;
+      font-weight: 600;
+      color: #777;
+      width: 24px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* radar wrapper fix */
+    .radar-wrap {
+      position: relative;
+      height: 170px;
+    }
+  </style>
 </head>
+
 <body>
 
 
-<!-- SLIDE 1 — VISÃO GERAL                       -->
+  <!-- SLIDE 1 — VISÃO GERAL                       -->
 
-<p class="section-label">Projeto SOPRO · Pesquisa de Campo · Março 2026</p>
+  <p class="section-label">Projeto SOPRO · Pesquisa de Campo · Março 2026</p>
 
-<div class="slide">
-  <div class="slide-bar" style="--bar-color:var(--sky);"></div>
-  <div class="slide-body">
+  <div class="slide">
+    <div class="slide-bar" style="--bar-color:var(--sky);"></div>
+    <div class="slide-body">
 
-    <div class="slide-header">
-      <div>
-        <div class="slide-eyebrow" style="color:var(--sky);">Slide 1 · Visão Geral</div>
-        <div class="slide-title">Resultado da pesquisa<br>em números</div>
-      </div>
-      <div class="slide-n">
-        <div class="slide-n-num">47</div>
-        <div class="slide-n-lbl">respondentes</div>
-      </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat" style="background:#EAF8FC;">
-        <div class="stat-num" style="color:var(--sky);">97,9%</div>
-        <div class="stat-lbl" style="color:var(--slate);">Acham interessante o dispositivo</div>
-      </div>
-      <div class="stat" style="background:#E6FAF4;">
-        <div class="stat-num" style="color:var(--mint);">93,6%</div>
-        <div class="stat-lbl" style="color:var(--slate);">Comprariam ou recomendariam</div>
-      </div>
-      <div class="stat" style="background:#FEF6E6;">
-        <div class="stat-num" style="color:var(--amber);">89,4%</div>
-        <div class="stat-lbl" style="color:var(--slate);">Acreditam que melhora muito a qualidade de vida</div>
-      </div>
-      <div class="stat" style="background:#EBF0F3;">
-        <div class="stat-num" style="color:var(--slate);">70,2%</div>
-        <div class="stat-lbl" style="color:var(--slate);">Consideram o dispositivo muito viável</div>
-      </div>
-    </div>
-
-    <div class="chart-2col">
-      <div class="chart-box">
-        <div class="cbox-label">Interesse no dispositivo · Q5</div>
-        <div class="canvas-wrap" style="height:175px;"><canvas id="c1"></canvas></div>
-        <div class="legend">
-          <span class="legend-item"><span class="ldot" style="background:var(--sky);"></span>Sim · 46</span>
-          <span class="legend-item"><span class="ldot" style="background:#BDBDBD;"></span>Talvez · 1</span>
+      <div class="slide-header">
+        <div>
+          <div class="slide-eyebrow" style="color:var(--sky);">Slide 1 · Visão Geral</div>
+          <div class="slide-title">Resultado da pesquisa<br>em números</div>
+        </div>
+        <div class="slide-n">
+          <div class="slide-n-num">47</div>
+          <div class="slide-n-lbl">respondentes</div>
         </div>
       </div>
-      <div class="chart-box">
-        <div class="cbox-label">Compraria / Recomendaria · Q6</div>
-        <div class="canvas-wrap" style="height:175px;"><canvas id="c2"></canvas></div>
-        <div class="legend">
-          <span class="legend-item"><span class="ldot" style="background:var(--mint);"></span>Sim · 44</span>
-          <span class="legend-item"><span class="ldot" style="background:#BDBDBD;"></span>Talvez · 3</span>
+
+      <div class="stats-row">
+        <div class="stat" style="background:#EAF8FC;">
+          <div class="stat-num" style="color:var(--sky);">97,9%</div>
+          <div class="stat-lbl" style="color:var(--slate);">Acham interessante o dispositivo</div>
+        </div>
+        <div class="stat" style="background:#E6FAF4;">
+          <div class="stat-num" style="color:var(--mint);">93,6%</div>
+          <div class="stat-lbl" style="color:var(--slate);">Comprariam ou recomendariam</div>
+        </div>
+        <div class="stat" style="background:#FEF6E6;">
+          <div class="stat-num" style="color:var(--amber);">89,4%</div>
+          <div class="stat-lbl" style="color:var(--slate);">Acreditam que melhora muito a qualidade de vida</div>
+        </div>
+        <div class="stat" style="background:#EBF0F3;">
+          <div class="stat-num" style="color:var(--slate);">70,2%</div>
+          <div class="stat-lbl" style="color:var(--slate);">Consideram o dispositivo muito viável</div>
         </div>
       </div>
-    </div>
 
+      <div class="chart-2col">
+        <div class="chart-box">
+          <div class="cbox-label">Interesse no dispositivo · Q5</div>
+          <div class="canvas-wrap" style="height:175px;"><canvas id="c1"></canvas></div>
+          <div class="legend">
+            <span class="legend-item"><span class="ldot" style="background:var(--sky);"></span>Sim · 46</span>
+            <span class="legend-item"><span class="ldot" style="background:#BDBDBD;"></span>Talvez · 1</span>
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="cbox-label">Compraria / Recomendaria · Q6</div>
+          <div class="canvas-wrap" style="height:175px;"><canvas id="c2"></canvas></div>
+          <div class="legend">
+            <span class="legend-item"><span class="ldot" style="background:var(--mint);"></span>Sim · 44</span>
+            <span class="legend-item"><span class="ldot" style="background:#BDBDBD;"></span>Talvez · 3</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
 
 
-<!-- SLIDE 2 — PERFIL DOS RESPONDENTES           -->
+  <!-- SLIDE 2 — PERFIL DOS RESPONDENTES           -->
 
-<div class="slide">
-  <div class="slide-bar" style="--bar-color:var(--mint);"></div>
-  <div class="slide-body">
+  <div class="slide">
+    <div class="slide-bar" style="--bar-color:var(--mint);"></div>
+    <div class="slide-body">
 
-    <div class="slide-header">
-      <div>
-        <div class="slide-eyebrow" style="color:var(--mint);">Slide 2 · Perfil</div>
-        <div class="slide-title">Quem participou<br>da pesquisa?</div>
+      <div class="slide-header">
+        <div>
+          <div class="slide-eyebrow" style="color:var(--mint);">Slide 2 · Perfil</div>
+          <div class="slide-title">Quem participou<br>da pesquisa?</div>
+        </div>
+        <div class="slide-n">
+          <div class="slide-n-num">47</div>
+          <div class="slide-n-lbl">respondentes</div>
+        </div>
       </div>
-      <div class="slide-n">
-        <div class="slide-n-num">47</div>
-        <div class="slide-n-lbl">respondentes</div>
+
+      <div class="chart-2col" style="margin-bottom:24px;">
+        <div>
+          <div class="age-bars">
+            <div class="age-row">
+              <div class="age-lbl">19–25 anos</div>
+              <div class="bar-bg">
+                <div class="bar-fill" style="width:12.8%;background:var(--sky);">12,8%</div>
+              </div>
+              <div class="age-val">6</div>
+            </div>
+            <div class="age-row">
+              <div class="age-lbl">26–30 anos</div>
+              <div class="bar-bg">
+                <div class="bar-fill" style="width:29.8%;background:var(--mint);">29,8%</div>
+              </div>
+              <div class="age-val">14</div>
+            </div>
+            <div class="age-row">
+              <div class="age-lbl">31–40 anos</div>
+              <div class="bar-bg">
+                <div class="bar-fill" style="width:29.8%;background:var(--mint);">29,8%</div>
+              </div>
+              <div class="age-val">14</div>
+            </div>
+            <div class="age-row">
+              <div class="age-lbl">Acima de 40</div>
+              <div class="bar-bg">
+                <div class="bar-fill" style="width:27.7%;background:var(--amber);">27,7%</div>
+              </div>
+              <div class="age-val">13</div>
+            </div>
+          </div>
+          <div style="margin-top:18px;padding:14px 16px;background:var(--light);border-radius:10px;font-size:12px;color:#888;line-height:1.6;">
+            <strong style="color:var(--slate);">59,6%</strong> dos respondentes têm entre <strong style="color:var(--slate);">26 e 40 anos</strong> — perfil de profissionais ativos na linha de cuidado.
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <div class="cbox-label">Faixa etária · Q2</div>
+          <div class="canvas-wrap" style="height:220px;"><canvas id="c_idade"></canvas></div>
+          <div class="legend" style="justify-content:center;">
+            <span class="legend-item"><span class="ldot" style="background:var(--sky);"></span>19–25</span>
+            <span class="legend-item"><span class="ldot" style="background:var(--mint);"></span>26–30</span>
+            <span class="legend-item"><span class="ldot" style="background:#2aaf88;"></span>31–40</span>
+            <span class="legend-item"><span class="ldot" style="background:var(--amber);"></span>+40</span>
+          </div>
+        </div>
       </div>
+
     </div>
-
-    <div class="chart-2col" style="margin-bottom:24px;">
-      <div>
-        <div class="age-bars">
-          <div class="age-row">
-            <div class="age-lbl">19–25 anos</div>
-            <div class="bar-bg"><div class="bar-fill" style="width:12.8%;background:var(--sky);">12,8%</div></div>
-            <div class="age-val">6</div>
-          </div>
-          <div class="age-row">
-            <div class="age-lbl">26–30 anos</div>
-            <div class="bar-bg"><div class="bar-fill" style="width:29.8%;background:var(--mint);">29,8%</div></div>
-            <div class="age-val">14</div>
-          </div>
-          <div class="age-row">
-            <div class="age-lbl">31–40 anos</div>
-            <div class="bar-bg"><div class="bar-fill" style="width:29.8%;background:var(--mint);">29,8%</div></div>
-            <div class="age-val">14</div>
-          </div>
-          <div class="age-row">
-            <div class="age-lbl">Acima de 40</div>
-            <div class="bar-bg"><div class="bar-fill" style="width:27.7%;background:var(--amber);">27,7%</div></div>
-            <div class="age-val">13</div>
-          </div>
-        </div>
-        <div style="margin-top:18px;padding:14px 16px;background:var(--light);border-radius:10px;font-size:12px;color:#888;line-height:1.6;">
-          <strong style="color:var(--slate);">59,6%</strong> dos respondentes têm entre <strong style="color:var(--slate);">26 e 40 anos</strong> — perfil de profissionais ativos na linha de cuidado.
-        </div>
-      </div>
-
-      <div class="chart-box">
-        <div class="cbox-label">Faixa etária · Q2</div>
-        <div class="canvas-wrap" style="height:220px;"><canvas id="c_idade"></canvas></div>
-        <div class="legend" style="justify-content:center;">
-          <span class="legend-item"><span class="ldot" style="background:var(--sky);"></span>19–25</span>
-          <span class="legend-item"><span class="ldot" style="background:var(--mint);"></span>26–30</span>
-          <span class="legend-item"><span class="ldot" style="background:#2aaf88;"></span>31–40</span>
-          <span class="legend-item"><span class="ldot" style="background:var(--amber);"></span>+40</span>
-        </div>
-      </div>
-    </div>
-
   </div>
-</div>
 
 
-<!-- SLIDE 3 — IMPACTO E VIABILIDADE             -->
+  <!-- SLIDE 3 — IMPACTO E VIABILIDADE             -->
 
-<div class="slide">
-  <div class="slide-bar" style="--bar-color:var(--amber);"></div>
-  <div class="slide-body">
+  <div class="slide">
+    <div class="slide-bar" style="--bar-color:var(--amber);"></div>
+    <div class="slide-body">
 
-    <div class="slide-header">
-      <div>
-        <div class="slide-eyebrow" style="color:var(--amber);">Slide 3 · Impacto Percebido</div>
-        <div class="slide-title">Como os profissionais<br>avaliam a solução?</div>
+      <div class="slide-header">
+        <div>
+          <div class="slide-eyebrow" style="color:var(--amber);">Slide 3 · Impacto Percebido</div>
+          <div class="slide-title">Como os profissionais<br>avaliam a solução?</div>
+        </div>
+        <div class="slide-n">
+          <div class="slide-n-num">47</div>
+          <div class="slide-n-lbl">respondentes</div>
+        </div>
       </div>
-      <div class="slide-n">
-        <div class="slide-n-num">47</div>
-        <div class="slide-n-lbl">respondentes</div>
+
+      <div class="perc-grid">
+        <!-- Q7 -->
+        <div class="perc-card">
+          <div class="perc-q">Melhora qualidade de vida · Q7</div>
+          <div class="big-pct" style="color:var(--mint);">89,4%</div>
+          <div class="big-sub">responderam "Muito"</div>
+          <div class="mini-bars">
+            <div class="mb-row">
+              <div class="mb-lbl">Muito</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:89.4%;background:var(--mint);"></div>
+              </div>
+              <div class="mb-val">42</div>
+            </div>
+            <div class="mb-row">
+              <div class="mb-lbl">Moderadamente</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:10.6%;background:#BDBDBD;"></div>
+              </div>
+              <div class="mb-val">5</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="perc-card">
+          <div class="perc-q">Dispositivo viável · Q9</div>
+          <div class="big-pct" style="color:var(--amber);">70,2%</div>
+          <div class="big-sub">responderam "Muito viável"</div>
+          <div class="mini-bars">
+            <div class="mb-row">
+              <div class="mb-lbl">Muito viável</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:70.2%;background:var(--amber);"></div>
+              </div>
+              <div class="mb-val">33</div>
+            </div>
+            <div class="mb-row">
+              <div class="mb-lbl">Moderado</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:27.7%;background:#BDBDBD;"></div>
+              </div>
+              <div class="mb-val">13</div>
+            </div>
+            <div class="mb-row">
+              <div class="mb-lbl">Pouco viável</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:2.1%;background:#E57373;"></div>
+              </div>
+              <div class="mb-val">1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Q11 -->
+        <div class="perc-card">
+          <div class="perc-q">Útil em outros ambientes · Q11</div>
+          <div class="big-pct" style="color:var(--sky);">85,1%</div>
+          <div class="big-sub">responderam "Muito útil"</div>
+          <div class="mini-bars">
+            <div class="mb-row">
+              <div class="mb-lbl">Muito útil</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:85.1%;background:var(--sky);"></div>
+              </div>
+              <div class="mb-val">40</div>
+            </div>
+            <div class="mb-row">
+              <div class="mb-lbl">Moderadamente</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:12.8%;background:#BDBDBD;"></div>
+              </div>
+              <div class="mb-val">6</div>
+            </div>
+            <div class="mb-row">
+              <div class="mb-lbl">Pouco útil</div>
+              <div class="mb-bg">
+                <div class="mb-fill" style="width:2.1%;background:#E57373;"></div>
+              </div>
+              <div class="mb-val">1</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Radar resumo -->
+        <div class="perc-card" style="display:flex;flex-direction:column;">
+          <div class="perc-q">Aprovação geral · Resumo</div>
+          <div class="radar-wrap" style="flex:1;"><canvas id="c_radar"></canvas></div>
+        </div>
       </div>
+
     </div>
-
-    <div class="perc-grid">
-      <!-- Q7 -->
-      <div class="perc-card">
-        <div class="perc-q">Melhora qualidade de vida · Q7</div>
-        <div class="big-pct" style="color:var(--mint);">89,4%</div>
-        <div class="big-sub">responderam "Muito"</div>
-        <div class="mini-bars">
-          <div class="mb-row">
-            <div class="mb-lbl">Muito</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:89.4%;background:var(--mint);"></div></div>
-            <div class="mb-val">42</div>
-          </div>
-          <div class="mb-row">
-            <div class="mb-lbl">Moderadamente</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:10.6%;background:#BDBDBD;"></div></div>
-            <div class="mb-val">5</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Q9 -->
-      <div class="perc-card">
-        <div class="perc-q">Dispositivo viável · Q9</div>
-        <div class="big-pct" style="color:var(--amber);">70,2%</div>
-        <div class="big-sub">responderam "Muito viável"</div>
-        <div class="mini-bars">
-          <div class="mb-row">
-            <div class="mb-lbl">Muito viável</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:70.2%;background:var(--amber);"></div></div>
-            <div class="mb-val">33</div>
-          </div>
-          <div class="mb-row">
-            <div class="mb-lbl">Moderado</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:27.7%;background:#BDBDBD;"></div></div>
-            <div class="mb-val">13</div>
-          </div>
-          <div class="mb-row">
-            <div class="mb-lbl">Pouco viável</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:2.1%;background:#E57373;"></div></div>
-            <div class="mb-val">1</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Q11 -->
-      <div class="perc-card">
-        <div class="perc-q">Útil em outros ambientes · Q11</div>
-        <div class="big-pct" style="color:var(--sky);">85,1%</div>
-        <div class="big-sub">responderam "Muito útil"</div>
-        <div class="mini-bars">
-          <div class="mb-row">
-            <div class="mb-lbl">Muito útil</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:85.1%;background:var(--sky);"></div></div>
-            <div class="mb-val">40</div>
-          </div>
-          <div class="mb-row">
-            <div class="mb-lbl">Moderadamente</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:12.8%;background:#BDBDBD;"></div></div>
-            <div class="mb-val">6</div>
-          </div>
-          <div class="mb-row">
-            <div class="mb-lbl">Pouco útil</div>
-            <div class="mb-bg"><div class="mb-fill" style="width:2.1%;background:#E57373;"></div></div>
-            <div class="mb-val">1</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Radar resumo -->
-      <div class="perc-card" style="display:flex;flex-direction:column;">
-        <div class="perc-q">Aprovação geral · Resumo</div>
-        <div class="radar-wrap" style="flex:1;"><canvas id="c_radar"></canvas></div>
-      </div>
-    </div>
-
   </div>
-</div>
+
+  <script>
+    Chart.defaults.font.family = "'Inter',sans-serif";
+    Chart.defaults.plugins.legend.display = false;
+
+    const DOUGH_OPTS = {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '72%',
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const t = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              return ` ${ctx.parsed} (${((ctx.parsed/t)*100).toFixed(1)}%)`;
+            }
+          }
+        }
+      }
+    };
+
+    /* Q5 */
+    new Chart(document.getElementById('c1'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Sim', 'Talvez'],
+        datasets: [{
+          data: [46, 1],
+          backgroundColor: ['#4DC3EF', '#DEDEDE'],
+          borderWidth: 0,
+          hoverOffset: 6
+        }]
+      },
+      options: DOUGH_OPTS
+    });
+
+    /* Q6 */
+    new Chart(document.getElementById('c2'), {
+      type: 'doughnut',
+      data: {
+        labels: ['Sim', 'Talvez'],
+        datasets: [{
+          data: [44, 3],
+          backgroundColor: ['#2DD9A4', '#DEDEDE'],
+          borderWidth: 0,
+          hoverOffset: 6
+        }]
+      },
+      options: DOUGH_OPTS
+    });
+
+    /* Faixa etária */
+    new Chart(document.getElementById('c_idade'), {
+      type: 'doughnut',
+      data: {
+        labels: ['19–25 anos', '26–30 anos', '31–40 anos', 'Acima de 40'],
+        datasets: [{
+          data: [6, 14, 14, 13],
+          backgroundColor: ['#4DC3EF', '#2DD9A4', '#22b88a', '#F5A623'],
+          borderWidth: 3,
+          borderColor: '#fff',
+          hoverOffset: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '60%',
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: ctx => {
+                const t = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                return ` ${ctx.parsed} pessoas (${((ctx.parsed/t)*100).toFixed(1)}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
 
 
-
+    new Chart(document.getElementById('c_radar'), {
+      type: 'radar',
+      data: {
+        labels: ['Interesse', 'Compraria', 'Qualidade', 'Viável', 'Outros usos'],
+        datasets: [{
+          data: [97.9, 93.6, 89.4, 70.2, 85.1],
+          backgroundColor: 'rgba(77,195,239,0.15)',
+          borderColor: '#4DC3EF',
+          borderWidth: 2,
+          pointBackgroundColor: '#4DC3EF',
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          r: {
+            min: 60,
+            max: 100,
+            grid: {
+              color: 'rgba(46,61,73,0.08)'
+            },
+            angleLines: {
+              color: 'rgba(46,61,73,0.08)'
+            },
+            ticks: {
+              display: false,
+              stepSize: 10
+            },
+            pointLabels: {
+              font: {
+                size: 9,
+                weight: '500'
+              },
+              color: '#888'
+            }
+          }
+        }
+      }
+    });
+  </script>
 </body>
+
 </html>
